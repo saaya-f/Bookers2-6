@@ -1,0 +1,45 @@
+    <div class="row">
+      <div class="col-xs-3">
+        <h2>User info</h2>
+        <%= render 'users/profile', user: @book.user %>
+
+        <h2>New book</h2>
+        <%= render 'books/form', book: @book_new %>
+      </div>
+
+      <div class="col-xs-9">
+        <h2>Book detail</h2>
+        <table class="table">
+          <tr>
+            <td>
+              <%= link_to user_path(@book.user_id) do %>
+              <%= attachment_image_tag @book.user, :profile_image, size: '60x60', format: 'jpeg', fallback: "no_image.jpg" %><br>
+              <%= @book.user.name %>
+              <% end %>
+            </td>
+            <td><%= link_to @book.title, book_path(@book) %></td>
+            <td><%= @book.body %></td>
+            <td class="favorite-btn"><%= render "favorites/favorite-btn", book: @book %></td>
+            <td>コメント数：<%= @book.book_comments.count %></td>
+
+            <% if @book.user == current_user %>
+              <td><%= link_to "Edit", edit_book_path, class:"btn-sm btn-success" %></td>
+              <td><%= link_to "Destroy", book_path, method: :delete, "data-confirm" => "本当に消しますか？", class:"btn-sm btn-danger" %></td>
+            <% end %>
+          </tr>
+        </table>
+        <table>
+          <td class="comment-index"><%= render "book_comments/comment-index", book: @book %></td>
+        </table>
+        <%= form_with(model:[@book, @book_comment],local: true) do |f|%>
+          <%= f.text_area :comment, size:"90x5" %>
+          <%= f.submit "送信", class:"pull-right" %>
+        <% end %>
+      </div>
+    </div>
+
+
+
+
+
+
